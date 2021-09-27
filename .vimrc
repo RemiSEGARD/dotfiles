@@ -25,7 +25,6 @@ filetype plugin indent on    " required
 "filetype plugin on
 
 runtime! plugin/sensible.vim
-
 set encoding=utf-8 fileencodings=
 syntax on
 set number
@@ -41,24 +40,38 @@ autocmd Filetype 'make' setlocal noexpandtab
 set autoread
 set autowrite
 
-"mapping for quickfix list
+" mapping for quickfix list
 nnoremap <leader>mm :silent! :make! \| :redraw!<cr>
 nnoremap <leader>mo :cw<cr>
 nnoremap <leader>mn :cnext<cr>
 
-"buffer navigation
-nnoremap <C-n> :bn<cr>
-nnoremap <C-p> :bp<cr>
+" buffer navigation
+nnoremap <C-j> :bn<cr>
+nnoremap <C-k> :bp<cr>
 nnoremap <C-d>d :bd<cr>
 
-"highlighting trailing whitespace
+" a few keybinds
+"  like r but for inserting 1 char
+nnoremap <C-I> i <ESC>r
+nnoremap <C-A> a <ESC>r
+
+" highlighting trailing whitespace
 hi GroupSpace ctermbg=red guibg=red
 match GroupSpace / \+$/
 
-"airline stuff
+" airline stuff
 let g:airline_theme='simple'
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#buffer_nr_show = 1
+
+" Gutentags
+"let g:gutentags_add_default_project_roots = 0
+"let g:gutentags_project_root = ['package.json', '.git']
+"let g:gutentags_generate_on_new = 1
+"let g:gutentags_generate_on_missing = 1
+"let g:gutentags_generate_on_write = 1
+"let g:gutentags_generate_on_empty_buffer = 0
+
 
 " per .git vim configs
 " just `git config vim.settings "expandtab sw=4 sts=4"` in a git repository
