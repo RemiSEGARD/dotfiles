@@ -16,7 +16,9 @@ Plugin 'tpope/vim-sensible'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 
-" Plugin 'ludovicchabant/vim-gutentags'
+Plugin 'ludovicchabant/vim-gutentags'
+
+Plugin 'preservim/nerdtree'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -46,14 +48,24 @@ nnoremap <leader>mo :cw<cr>
 nnoremap <leader>mn :cnext<cr>
 
 " buffer navigation
-nnoremap <C-j> :bn<cr>
-nnoremap <C-k> :bp<cr>
-nnoremap <C-d>d :bd<cr>
+nnoremap <C-k> :bn<cr>
+nnoremap <C-j> :bp<cr>
+nnoremap <C-d>d :bn<BAR>bd#<cr>
 
 " a few keybinds
 "  like r but for inserting 1 char
 nnoremap <C-I> i <ESC>r
 nnoremap <C-A> a <ESC>r
+"  swap current line below/above
+nnoremap - ddp
+nnoremap _ dd2kp
+"  reindent everything in the current file
+nnoremap <C-G> gg=<S-g><C-o>
+"  uppercase current word
+inoremap <C-u> <Esc>viwUea
+nnoremap <C-u> viwUe
+"  select current word
+nnoremap <Space> viw
 
 " highlighting trailing whitespace
 hi GroupSpace ctermbg=red guibg=red
@@ -64,19 +76,24 @@ let g:airline_theme='simple'
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#buffer_nr_show = 1
 
-" Gutentags
-"let g:gutentags_add_default_project_roots = 0
-"let g:gutentags_project_root = ['package.json', '.git']
-"let g:gutentags_generate_on_new = 1
-"let g:gutentags_generate_on_missing = 1
-"let g:gutentags_generate_on_write = 1
-"let g:gutentags_generate_on_empty_buffer = 0
+" Nerdtree
+autocmd VimEnter * NERDTree | wincmd p
+autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
+    \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
+autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
 
+" Gutentags
+let g:gutentags_add_default_project_roots = 0
+let g:gutentags_project_root = ['package.json', '.git']
+let g:gutentags_generate_on_new = 1
+let g:gutentags_generate_on_missing = 1
+let g:gutentags_generate_on_write = 1
+let g:gutentags_generate_on_empty_buffer = 0
 
 " per .git vim configs
 " just `git config vim.settings "expandtab sw=4 sts=4"` in a git repository
 " change syntax settings for this repository
 let git_settings = system("git config --get vim.settings")
 if strlen(git_settings)
-	exe "set" git_settings
+    exe "set" git_settings
 endif
