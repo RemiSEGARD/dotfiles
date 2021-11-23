@@ -1,5 +1,4 @@
 "---Plugins---
-
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
@@ -11,6 +10,7 @@ Plugin 'ludovicchabant/vim-gutentags'
 Plugin 'preservim/nerdtree' " might get rid of it at some point
 Plugin 'ervandew/supertab'
 Plugin 'dense-analysis/ale'
+Plugin 'justinmk/vim-syntax-extra'
 Plugin 'TaDaa/vimade'
 Plugin 'gosukiwi/vim-atom-dark'
 call vundle#end()
@@ -41,7 +41,6 @@ set pumheight=10
 set omnifunc=syntaxcomplete#Complete
 set completeopt=longest,menuone
 
-
 "---Theming---
 
 "colorscheme
@@ -49,8 +48,7 @@ colorscheme atom-dark-256
 
 " cursorline
 set cursorline
-hi CursorLine   cterm=NONE ctermbg=234 ctermfg=NONE
-hi CursorLineNr cterm=NONE ctermbg=234 ctermfg=50
+au Colorscheme * hi CursorLineNr cterm=NONE ctermbg=234 ctermfg=50
 augroup CursorLine
     au!
     au VimEnter,WinEnter,BufWinEnter * setlocal cursorline
@@ -79,6 +77,11 @@ nnoremap <Left> <Nop>
 nnoremap <Up> <Nop>
 nnoremap <Down> <Nop>
 
+vnoremap <Right> <Nop>
+vnoremap <Left> <Nop>
+vnoremap <Up> <Nop>
+vnoremap <Down> <Nop>
+
 nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
@@ -94,8 +97,8 @@ noremap j gj
 noremap k gk
 
 " swap current line below/above
-nnoremap - ddp
-nnoremap _ dd2kp
+nnoremap - :m .+1<cr>==
+nnoremap _ :m .-2<cr>==
 
 " uppercase current word
 inoremap <C-u> <Esc>viwUea
@@ -106,7 +109,6 @@ nnoremap <Space> viw
 
 " select current function
 nnoremap <Leader><Space> [[v%
-
 
 "---Plugin settings---
 
@@ -135,6 +137,7 @@ let g:gutentags_generate_on_empty_buffer = 0
 
 " Supertab
 let g:SuperTabDefaultCompletionType = "context"
+let g:SuperTabContextDefaultCompletionType = "context"
 
 " Vimade (fading stuff)
 let g:vimade = {}
