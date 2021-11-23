@@ -137,7 +137,7 @@ let g:gutentags_generate_on_empty_buffer = 0
 
 " Supertab
 let g:SuperTabDefaultCompletionType = "context"
-let g:SuperTabContextDefaultCompletionType = "context"
+let g:SuperTabContextDefaultCompletionType = "<C-n>"
 
 " Vimade (fading stuff)
 let g:vimade = {}
