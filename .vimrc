@@ -13,6 +13,7 @@ Plugin 'dense-analysis/ale'
 Plugin 'justinmk/vim-syntax-extra'
 Plugin 'TaDaa/vimade'
 Plugin 'gosukiwi/vim-atom-dark'
+Plugin 'rhysd/vim-clang-format'
 call vundle#end()
 
 " load vim-sensible before my settings
@@ -138,6 +139,11 @@ let g:gutentags_generate_on_empty_buffer = 0
 " Supertab
 let g:SuperTabDefaultCompletionType = "context"
 let g:SuperTabContextDefaultCompletionType = "<C-n>"
+
+" ClangFormat
+let g:clang_format#auto_format = 1
+autocmd FileType cpp ClangFormatAutoEnable
+
 
 " Vimade (fading stuff)
 let g:vimade = {}
