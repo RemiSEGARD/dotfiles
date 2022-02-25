@@ -4,16 +4,18 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'tpope/vim-sensible'
 Plugin 'tpope/vim-fugitive'
+Plugin 'preservim/nerdtree' " might get rid of it at some point
+Plugin 'ryanoasis/vim-devicons'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'ludovicchabant/vim-gutentags'
-Plugin 'preservim/nerdtree' " might get rid of it at some point
 Plugin 'ervandew/supertab'
-Plugin 'dense-analysis/ale'
+"Plugin 'dense-analysis/ale'
 Plugin 'justinmk/vim-syntax-extra'
 Plugin 'TaDaa/vimade'
 Plugin 'gosukiwi/vim-atom-dark'
 Plugin 'rhysd/vim-clang-format'
+Plugin 'neoclide/coc.nvim', {'branch': 'master', 'do': 'yarn install --frozen-lockfile'}
 call vundle#end()
 
 " load vim-sensible before my settings
@@ -143,7 +145,6 @@ let g:SuperTabContextDefaultCompletionType = "<C-n>"
 " ClangFormat
 let g:clang_format#auto_format = 1
 autocmd FileType cpp ClangFormatAutoEnable
-
 
 " Vimade (fading stuff)
 let g:vimade = {}
