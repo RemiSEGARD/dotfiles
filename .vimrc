@@ -149,3 +149,7 @@ autocmd FileType cpp ClangFormatAutoEnable
 " Vimade (fading stuff)
 let g:vimade = {}
 let g:vimade.fadelevel = 0.5
+
+" Tiger stuff
+source ~/.vim/ftdetect/tiger.vim
+autocmd FileType tiger source ~/.vim/syntax/tiger-syntax.vim
