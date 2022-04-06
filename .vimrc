@@ -15,6 +15,7 @@ Plugin 'justinmk/vim-syntax-extra'
 Plugin 'TaDaa/vimade'
 Plugin 'gosukiwi/vim-atom-dark'
 Plugin 'rhysd/vim-clang-format'
+Plugin 'jceb/vim-orgmode'
 Plugin 'neoclide/coc.nvim', {'branch': 'master', 'do': 'yarn install --frozen-lockfile'}
 call vundle#end()
 
@@ -48,6 +49,8 @@ set completeopt=longest,menuone
 
 "colorscheme
 colorscheme atom-dark-256
+"au Colorscheme * hi Normal guibg=NONE ctermbg=NONE
+"au Colorscheme * hi EndOfBuffer guibg=NONE ctermbg=NONE
 
 " cursorline
 set cursorline
@@ -59,8 +62,8 @@ augroup CursorLine
 augroup END
 
 " highlighting trailing whitespace
-hi GroupSpace ctermbg=red guibg=red
-match GroupSpace / \+$/
+au Colorscheme * hi spaces ctermbg=red guibg=red
+au Colorscheme * match spaces / \+$/
 
 "---Mapping---
 
@@ -70,8 +73,8 @@ nnoremap <leader>mo :cw<cr>
 nnoremap <leader>mn :cnext<cr>
 
 " buffer navigation
-nnoremap <C-o> :bn<cr>
-nnoremap <C-i> :bp<cr>
+nnoremap <C-u> :bp<cr>
+nnoremap <C-i> :bn<cr>
 nnoremap <C-d>d :bn<BAR>bd#<cr>
 
 " arrow mapping
@@ -102,10 +105,6 @@ noremap k gk
 " swap current line below/above
 nnoremap - :m .+1<cr>==
 nnoremap _ :m .-2<cr>==
-
-" uppercase current word
-inoremap <C-u> <Esc>viwUea
-nnoremap <C-u> viwUe
 
 " select current word
 nnoremap <Space> viw
