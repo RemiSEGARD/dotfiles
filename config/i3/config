@@ -109,14 +109,14 @@ bindsym $mod+a focus parent
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
 set $ws1 "1: Home"
-set $ws2 "2: Firefox"
+set $ws2 "2"
 set $ws3 "3"
 set $ws4 "4"
 set $ws5 "5"
 set $ws6 "6"
 set $ws7 "7"
 set $ws8 "8: Com"
-set $ws9 "9: Extra"
+set $ws9 "9"
 set $ws10 "10"
 
 # switch to workspace
@@ -202,3 +202,23 @@ gaps outer 6
 gaps bottom 10
 
 exec setxkbmap -layout gb
+
+# color defines for zenburn styled i3
+set $bg     #2c2c2e
+set $fg     #9f9f9f
+set $hi     #efef8f
+set $ac     #a0a0a0
+set $tx     #040404
+set $ia     #8f8f8f
+set $be     #8faf9f
+set $yw     #ccdc90
+set $gn     #88b090
+set $rd     #e89393
+
+# set some nice colors      border     background  text     indicator
+client.focused              $ac        $ac         $tx      $ac
+client.unfocused            $bg        $bg         $ia      $bg
+client.focused_inactive     $bg        $bg         $ac
+client.urgent               $rd        $rd         $tx
+
+

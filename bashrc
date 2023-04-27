@@ -6,29 +6,50 @@
 
 colors() {
 	local fgc bgc vals seq0
-
-	printf "Color escapes are %s\n" '\e[${value};...;${value}m'
-	printf "Values 30..37 are \e[33mforeground colors\e[m\n"
-	printf "Values 40..47 are \e[43mbackground colors\e[m\n"
-	printf "Value  1 gives a  \e[1mbold-faced look\e[m\n\n"
-
 	# foreground colors
-	for fgc in {30..37}; do
-		# background colors
-		for bgc in {40..47}; do
-			fgc=${fgc#37} # white
-			bgc=${bgc#40} # black
+    echo "Special: "
+    for spec in $(seq 7); do
+        echo -ne "\e[${spec}mspec:$spec\e[0m "
+    done
+    echo -e "\e[0m\n"
 
-			vals="${fgc:+$fgc;}${bgc}"
-			vals=${vals%%;}
+    echo "Foreground: "
+    for fg in $(seq 30 37); do
+        echo -ne "\e[${fg}mfg:$fg\e[0m "
+    done
+    echo -e "\e[0m\n"
 
-			seq0="${vals:+\e[${vals}m}"
-			printf "  %-9s" "${seq0:-(default)}"
-			printf " ${seq0}TEXT\e[m"
-			printf " \e[${vals:+${vals+$vals;}}1mBOLD\e[m"
-		done
-		echo; echo
-	done
+    echo "Dark foreground (Special ;2): "
+    for fg in $(seq 30 37); do
+        echo -ne "\e[${fg};2mfg:$fg\e[0m "
+    done
+    echo -e "\e[0m\n"
+
+    echo "Light foreground: "
+    for fg in $(seq 90 97); do
+        echo -ne "\e[${fg}mfg:$fg\e[0m "
+    done
+    echo -e "\e[0m\n"
+
+    echo "Bold foreground: "
+    for fg in $(seq 30 37); do
+        echo -ne "\e[${fg};1mfg:$fg\e[0m "
+    done
+    echo -e "\e[0m\n"
+
+    echo "Bold dark foreground: "
+    for fg in $(seq 30 37); do
+        echo -ne "\e[${fg};1;2mfg:$fg\e[0m "
+    done
+    echo -e "\e[0m\n"
+
+    echo "Background: "
+    for bg in $(seq 40 47); do
+        echo -ne "\e[${bg}mbg:$bg\e[0m "
+    done
+    echo -e "\e[0m\n"
+
+    echo -e "\e[0m"
 }
 
 [ -r /usr/share/bash-completion/bash_completion ] && . /usr/share/bash-completion/bash_completion
@@ -36,7 +57,7 @@ colors() {
 # Change the window title of X terminals
 case ${TERM} in
 	xterm*|rxvt*|Eterm*|aterm|kterm|gnome*|interix|konsole*)
-		PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME%%.*}:${PWD/#$HOME/\~}\007"'
+		PROMPT_COMMAND='echo -ne "\033]0;${PWD/#$HOME/\~}\007"'
 		;;
 	screen*)
 		PROMPT_COMMAND='echo -ne "\033_${USER}@${HOSTNAME%%.*}:${PWD/#$HOME/\~}\033\\"'
@@ -193,3 +214,8 @@ export PATH="/usr/lib/jvm/java-17-openjdk/bin/java:$PATH"
 alias cdr='if gitpath=`git rev-parse --show-toplevel`; then cd $gitpath; fi'
 
 alias vim=nvim
+
+eval "$(ssh-agent -s)" >/dev/null
+trap "ssh-agent -k" EXIT
+
+alias tcdocker='docker run --rm -it -v $PWD:/tc --workdir /tc registry.lrde.epita.fr/tc-sid'

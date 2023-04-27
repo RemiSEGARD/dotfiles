@@ -6,7 +6,7 @@ require('onedark').setup(
 
 require('lualine').setup {
   options = {
-    theme = 'tokyonight',
+    theme = 'onedark-nvim',
   },
   tabline = {
     lualine_a = {'buffers'},
