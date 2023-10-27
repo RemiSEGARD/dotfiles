@@ -39,6 +39,7 @@ map("n", "<C-d>d", ":bn<BAR>bd#<cr>", opts)
 
 -- Telescope
 map("n", "<C-p>", ":Telescope find_files<CR>", opts)
+map("n", "<A-p>", ":Telescope live_grep<CR>", opts)
 
 -- Swap lines below/above
 map("n", "-", ":m +1<cr>==", opts)

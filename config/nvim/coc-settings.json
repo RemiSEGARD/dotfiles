@@ -1,3 +1,4 @@
 {
     "suggest.noselect": true,
+    "javascript.suggestionActions.enabled": false,
 }

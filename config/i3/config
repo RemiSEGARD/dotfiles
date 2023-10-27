@@ -191,8 +191,11 @@ for_window [class="gnome-calculator"] floating enable
 exec_always --no-startup-id picom
 exec_always --no-startup-id optimus-manager-qt
 exec_always --no-startup-id /home/remi/.config/polybar/launch.sh
+exec_always --no-startup-id /home/remi/.local/bin/facer_rgb.py -m 0
 exec --no-startup-id discord --start-minimized
 exec --no-startup-id slack -u
+exec --no-startup-id wired
+exec --no-startup-id xfce4-clipman
 
 exec_always --no-startup-id feh --bg-scale ~/Pictures/wallpaper.png
 

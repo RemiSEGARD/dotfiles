@@ -27,6 +27,15 @@ api.nvim_create_autocmd(
     set shiftwidth=2
   ]] }
 )
+
+api.nvim_create_autocmd(
+  "FileType",
+  { pattern = { "ada" }, command = [[ 
+    set tabstop=3
+    set shiftwidth=3
+  ]] }
+)
+
 api.nvim_create_autocmd(
   "FileType",
   { pattern = { "Makefile" }, command = [[ 

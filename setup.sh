@@ -1,19 +1,43 @@
 #! /bin/bash
 
-this_path="$(dirname $(realpath $0))"
-home_path="$(echo ~)"
+function install() {
+    which pacman 2>&1 >/dev/null || which yay || return 0
+    local package 
+    [ $# -eq 2 ] && package="$2" || package="$1"
+    which $1 2>&1 >/dev/null || echo sudo pacman -S $1
+}
 
-[ ! -d "$home_path/.config" ] && mkdir "$home_path/.config"
+function link() {
+    echo ln -s "$PWD/$1" "~/$(echo "$1" | sed 's/^config/.config/')"
+}
 
-set -x
+function link_hidden() {
+    link "$(echo "$1" | sed 's/\([^/]*\)$/.\1/')"
+}
 
-#
+[ -d ~/.config ] || mkdir "~/.config"
 
-ln -s $this_path/Pictures/wallpaper.png $home_path/Pictures/wallpaper.png
+# Wallpapers
+
+link Pictures/wallpaper.png
+link Pictures/wallpaper2.png
+
+# Install necessary packages
+
+install nvim neovim
+install kitty 
+install i3
+install picom 
+install polybar
+install rofi
+install discord
+install slack
 
 # Config files
-ln -s $this_path/config/nvim $home_path/.config/nvim
-ln -s $this_path/config/i3 $home_path/.config/i3
-ln -s $this_path/bashrc $home_path/.bashrc
-ln -s $this_path/config/picom.conf $home_path/.config/picom.conf
-ln -s $this_path/config/polybar $home_path/.config/polybar
+link config/nvim
+link config/i3
+link config/picom.conf
+link config/polybar
+link_hidden bashrc
+link_hidden gitconfig
+link_hidden gitignore

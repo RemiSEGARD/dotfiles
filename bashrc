@@ -57,7 +57,7 @@ colors() {
 # Change the window title of X terminals
 case ${TERM} in
 	xterm*|rxvt*|Eterm*|aterm|kterm|gnome*|interix|konsole*)
-		PROMPT_COMMAND='echo -ne "\033]0;${PWD/#$HOME/\~}\007"'
+        PROMPT_COMMAND='echo -ne "\033]0;$(basename "${PWD/#$HOME/\~}")\007"'
 		;;
 	screen*)
 		PROMPT_COMMAND='echo -ne "\033_${USER}@${HOSTNAME%%.*}:${PWD/#$HOME/\~}\033\\"'
@@ -93,7 +93,8 @@ if ${use_color} ; then
 	if [[ ${EUID} == 0 ]] ; then
 		PS1='\[\033[01;31m\][\h\[\033[01;36m\] \W\[\033[01;31m\]]\$\[\033[00m\] '
 	else
-        PS1='~ $(t="$(echo -ne $?)" ;printf "%s%3d" "$(if [ $t != 0 ]; then echo -ne "\[\033[01;31m\]"; else echo -ne "\[\033[01;32m\]"; fi)" "$t") \[\033[01;32m\][\u@\h\[\033[01;37m\] \W$(if t=$(git branch --show-current 2>/dev/null); then echo " \[\033[2;91m\]\[\033[1;31m\]$t$(if [ ! -z "$(git diff)" ]; then echo " \[\033[33m\]"$(git diff --stat | tail -n 1| sed "s/[a-z ()]//g;s/[0-9][0-9]*,//g;s/\([0-9]*\)\([+-]\)/\2\1/g"); fi;)"; fi)\[\033[01;32m\]]\$\[\033[00m\] '
+        PS1='\[\033[0m\]~ $(t="$(echo -ne $?)" ;printf "%s%3d" "$(if [ $t != 0 ]; then echo -ne "\[\033[01;31m\]"; else echo -ne "\[\033[01;32m\]"; fi)" "$t") \[\033[01;32m\][\u@\h\[\033[01;37m\] \W$(if t=$(git branch --show-current 2>/dev/null); then echo " \[\033[2;91m\]\[\033[1;31m\]$t$(if [ ! -z "$(git diff)" ]; then echo " \[\033[33m\]"$(git diff --stat | tail -n 1| sed "s/[a-z ()]//g;s/[0-9][0-9]*,//g;s/\([0-9]*\)\([+-]\)/\2\1/g"); fi;)"; fi)\[\033[01;32m\]]\$\[\033[00;1;3m\] '
+        PS0='\033[0m'
 	fi
 
 	alias ls='ls --color=auto'
@@ -166,22 +167,32 @@ quick_script () {
         cmake-llvm)
             cmake \
                 -DLLVM_CCACHE_BUILD=ON \
-                -DDLLVM_PARALLEL_LINK_JOBS=1 \
+                -DDLLVM_PARALLEL_LINK_JOBS=8 \
                 -DCMAKE_BUILD_TYPE=Debug \
                 -DBUILD_SHARED_LIBS=ON \
                 $@
             ;;
+        sync_time)
+            timedatectl set-ntp true
+            ;;
+        defnet)
+            sudo virsh net-start default
+            ;;
+        kbrate)
+            setxkbmap gb -option compose:ralt
+            xset r rate 399 50
+            ;;
         init-mk)
             cat > Makefile <<EOF
-CC = g++
+CC = cc
 
 SRC = main.o
 
 all: \$(SRC)
-	\$(CC) -Wall -Werror -Wextra \$(SRC) -g -fsanitize=address -o main
+	\$(CC) -pedantic -Wall -Werror -Wextra \$(SRC) -g -fsanitize=address -o main
 
-%.o: %.cc
-	\$(CC) -Wall -Werror -Wextra $< -c -g -fsanitize=address
+%.o: %.c
+	\$(CC) -std=c99 -pedantic -Werror -Wall -Wextra -Wvla $< -c -g -fsanitize=address
 
 clean:
 	\$(RM) *.o
@@ -194,7 +205,7 @@ EOF
     esac
 }
 
-complete -W "cmake-llvm init-mk test-command" quick_script
+complete -W "cmake-llvm kbrate init-mk test-command defnet sync_time" quick_script
 
 backup () {
     if [ $# != 1 ]; then
@@ -207,10 +218,13 @@ backup () {
 }
 
 source /usr/share/bash-completion/completions/git
-complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)' ?akefile | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make
+source /usr/share/bash-completion/completions/make
+source /usr/share/bash-completion/completions/nbfc
+source /usr/share/bash-completion/completions/nbfc_service
 source $HOME/.nix-profile/etc/profile.d/nix.sh
+export EDITOR=nvim
 export PATH="/home/remi/bin/idea-IU-223.8214.52/bin:$PATH"
-export PATH="/usr/lib/jvm/java-17-openjdk/bin/java:$PATH"
+export PATH="/usr/lib/jvm/java-17-openjdk/bin:$PATH"
 alias cdr='if gitpath=`git rev-parse --show-toplevel`; then cd $gitpath; fi'
 
 alias vim=nvim
@@ -219,3 +233,6 @@ eval "$(ssh-agent -s)" >/dev/null
 trap "ssh-agent -k" EXIT
 
 alias tcdocker='docker run --rm -it -v $PWD:/tc --workdir /tc registry.lrde.epita.fr/tc-sid'
+alias nsight='computeprof'
+
+alias clear='echo -ne "\e[H\e[2J\e[3J";:'

@@ -1,0 +1,10 @@
+[user]
+	email = remi.segard@epita.fr
+	name = remi.segard
+[core]
+	excludesFile = /home/remi/.gitignore
+[alias]
+	lol = log --oneline --graph
+	lola = log --oneline --graph --all
+[init]
+	defaultBranch = master
